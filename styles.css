@@ -1,4 +1,5 @@
 body {
+    font-family: 'Noto Sans',sans-serif;
     background-color: #4DC3FF;
     display: flex;
     flex-direction: column;
