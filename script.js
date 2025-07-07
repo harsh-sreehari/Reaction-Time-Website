@@ -1,22 +1,35 @@
 const body = document.body;
 
+let waitingForGreen = false;
+let greenTimestamp = 0;
+
 function RandomTimer(min, max) { 
-    // timer 
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function changeColor() {
-    //Make bg red, when bg is red, stay red for x(random) seconds
-    body.addEventListener('click', function() {
-        body.style.backgroundColor = '#FF9F87' 
-        let time = RandomTimer(4,9);
-        setTimeout(function() {
-            body.style.backgroundColor = 'Green';
-        }, time * 1000);
-    })
-
+function startGame() {
+    body.style.backgroundColor = '#FF9F87';
+    waitingForGreen = false;
+    let time = RandomTimer(4, 9);
+    setTimeout(function() {
+        body.style.backgroundColor = 'green';
+        greenTimestamp = Date.now();
+        waitingForGreen = true;
+    }, time * 1000);
 }
 
-changeColor();
+body.addEventListener('click', function() {
+    if (!waitingForGreen) {
+        startGame();
+    } else {
+        let reaction = Date.now() - greenTimestamp;
+        alert('Your reaction time: ' + reaction + ' ms');
+        waitingForGreen = false;
+        body.style.backgroundColor = '';
+    }
+});
+
+// Start the first round
+startGame();
